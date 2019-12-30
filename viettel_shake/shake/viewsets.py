@@ -4,6 +4,7 @@ from random import randint
 
 from celery import chain
 from django.conf import settings
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -26,6 +27,9 @@ class ViettelShakeViewSet(viewsets.GenericViewSet):
 
         return super().get_serializer_class()
 
+    @swagger_auto_schema(
+        operation_description="Request Viettel to send OTP to user's phone number"
+    )
     @action(detail=False, methods=['post', ])
     def request_login(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -34,6 +38,10 @@ class ViettelShakeViewSet(viewsets.GenericViewSet):
         session = ViettelSession(user_id=data['user_id'])
         return Response(session.request_login())
 
+    @swagger_auto_schema(
+        operation_description='Make login request with OTP\n'
+                              'If shake_turn is not -1, then use total shake turn left of user'
+    )
     @action(detail=False, methods=['post', ])
     def login(self, request):
         serializer = self.get_serializer(data=request.data)
