@@ -1,0 +1,30 @@
+{% load rest_framework %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Viettel Shake</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+<form class="form-horizontal" action="{% url 'viettel:viettel-shake-request-login' %}" method="POST" novalidate>
+  {% csrf_token %}
+  {% render_form request_login_serializer template_pack='rest_framework/vertical' %}
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Send OTP</button>
+    </div>
+  </div>
+</form>
+<form class="form-horizontal" action="{% url 'viettel:viettel-shake-login' %}" method="POST">
+  {% csrf_token %}
+  {% render_form login_serializer template_pack='rest_framework/vertical' %}
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Login</button>
+    </div>
+  </div>
+</form>
+</body>
+</html>

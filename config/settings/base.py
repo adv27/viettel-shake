@@ -75,6 +75,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "viettel_shake.users.apps.UsersConfig",
     # Your stuff: custom apps go here
+    "viettel_shake.shake.apps.ShakeConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -233,7 +234,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
+                      "%(process)d %(thread)d %(message)s"
         }
     },
     "handlers": {
@@ -283,6 +284,7 @@ ACCOUNT_ADAPTER = "viettel_shake.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = "viettel_shake.users.adapters.SocialAccountAdapter"
 
-
 # Your stuff...
 # ------------------------------------------------------------------------------
+MIN_COUNTDOWN = env.int("MIN_COUNTDOWN", default=1)
+MAX_COUNTDOWN = env.int("MAX_COUNTDOWN", default=5)

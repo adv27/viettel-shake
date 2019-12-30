@@ -13,15 +13,14 @@
     </facet>
   </component>
   <component name="NewModuleRootManager">
-     
-    <content url="file://$MODULE_DIR$" /> 
-    
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.7.5 Docker (viettel_shake_local_django:latest)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">
     <option name="requirementsPath" value="$MODULE_DIR$/requirements/local.txt" />
   </component>
-   <component name="PyDocumentationSettings">
+  <component name="PyDocumentationSettings">
     <option name="renderExternalDocumentation" value="true" />
   </component>
   <component name="ReSTService">

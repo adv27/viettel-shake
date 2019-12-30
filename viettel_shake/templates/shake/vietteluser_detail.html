@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ viettel_user.phone }}</title>
+</head>
+<body>
+<h1>{{ viettel_user.phone }}</h1>
+{% for shake in shakes %}
+  <li>
+    {{ shake.id }}
+    {{ shake.created_at }}
+    {{ shake.data }}
+  </li>
+{% endfor %}
+</body>
+</html>
