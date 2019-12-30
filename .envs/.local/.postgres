@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=viettel_shake
+POSTGRES_USER=TcAQcAnJNTUAcbHupcvZKkBqHDcuuLvN
+POSTGRES_PASSWORD=cMWJvZiO2Ol9G7FjUxAuuXKGrdr3rXdYGdQcJKMylvPrdNO6kONJG5Jgl0I7S9IN
