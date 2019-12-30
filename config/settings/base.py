@@ -2,7 +2,13 @@
 Base settings to build other settings files upon.
 """
 
+import logging
+
 import environ
+import sentry_sdk
+from sentry_sdk.integrations.celery import CeleryIntegration
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
 
 ROOT_DIR = (
     environ.Path(__file__) - 3
@@ -69,6 +75,7 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "rest_framework",
+    "drf_yasg",
     "django_celery_beat",
 ]
 
@@ -283,6 +290,23 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_ADAPTER = "viettel_shake.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = "viettel_shake.users.adapters.SocialAccountAdapter"
+
+# Sentry
+# ------------------------------------------------------------------------------
+SENTRY_DSN = env("SENTRY_DSN", default="")
+if SENTRY_DSN:
+    SENTRY_LOG_LEVEL = env.int("DJANGO_SENTRY_LOG_LEVEL", logging.INFO)
+    SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="dev")
+
+    sentry_logging = LoggingIntegration(
+        level=SENTRY_LOG_LEVEL,  # Capture info and above as breadcrumbs
+        event_level=logging.ERROR,  # Send errors as events
+    )
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=SENTRY_ENVIRONMENT,
+        integrations=[sentry_logging, DjangoIntegration(), CeleryIntegration()],
+    )
 
 # Your stuff...
 # ------------------------------------------------------------------------------

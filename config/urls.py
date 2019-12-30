@@ -37,6 +37,8 @@ urlpatterns = [
     # User management
     path("users/", include("viettel_shake.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    # Sentry sample error
+    path('sentry-debug/', trigger_error),
     # Your stuff: custom urls includes go here
     path('viettel/', include('viettel_shake.shake.urls', namespace='viettel')),
     # Yet another Swagger generator
