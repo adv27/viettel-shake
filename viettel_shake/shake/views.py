@@ -1,8 +1,10 @@
+import json
+
 from django.shortcuts import render
 from django.views.generic import DetailView
 
 from .models import ViettelUser
-from .serializers import LoginSerializer, RequestLoginSerializer
+from .serializers import LoginSerializer, RequestLoginSerializer, ShakeSerializer
 
 
 def index(request):
@@ -21,7 +23,9 @@ class ViettelUserDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['shakes'] = self.object.shakes.all()
+        shakes = self.object.shakes.all()
+        context['shakes'] = shakes
+        context['shakes_json'] = json.dumps(ShakeSerializer(shakes, many=True).data)
         return context
 
 

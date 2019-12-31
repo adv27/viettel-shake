@@ -1,17 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>{{ viettel_user.phone }}</title>
-</head>
-<body>
-<h1>{{ viettel_user.phone }}</h1>
-{% for shake in shakes %}
-  <li>
-    {{ shake.id }}
-    {{ shake.created_at }}
-    {{ shake.data }}
-  </li>
-{% endfor %}
-</body>
-</html>
+{% extends 'shake/index.html' %}
+
+{% block title %}
+    {{ viettel_user.phone }}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>{{ viettel_user.phone }}</h1>
+    <table id="table" data-height="460">
+      <thead>
+      <tr>
+        <th data-field="id">Item ID</th>
+        <th data-field="data.status.code">Code</th>
+        <th data-field="data.status.message">Message</th>
+        <th data-field="created_at">Created At</th>
+      </tr>
+      </thead>
+    </table>
+      {% for shake in shakes %}
+        <li>
+            {{ shake.id }}
+            {{ shake.created_at }}
+            {{ shake.data }}
+        </li>
+      {% endfor %}
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+  <script>
+    var shakes = {{ shakes_json|safe }};
+    var $table = $('#table');
+    $(function () {
+      $('#table').bootstrapTable({
+        data: shakes
+      });
+    });
+  </script>
+{% endblock %}
