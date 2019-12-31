@@ -9,6 +9,7 @@ import sentry_sdk
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
 
 ROOT_DIR = (
     environ.Path(__file__) - 3
@@ -305,7 +306,12 @@ if SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         environment=SENTRY_ENVIRONMENT,
-        integrations=[sentry_logging, DjangoIntegration(), CeleryIntegration()],
+        integrations=[
+            sentry_logging,
+            DjangoIntegration(),
+            CeleryIntegration(),
+            RedisIntegration()
+        ],
     )
 
 # Your stuff...
