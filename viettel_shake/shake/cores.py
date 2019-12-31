@@ -1,8 +1,11 @@
+import logging
+
 from requests import Session
 from requests.exceptions import RequestException
 from requests.utils import default_headers
 
 from .consts import Status, ViettelShake
+from .exceptions import LoginFailed
 
 
 class ViettelSession(Session):
@@ -63,6 +66,10 @@ class ViettelSession(Session):
                 'Authorization': token
             })
             self.headers = headers
+        else:
+            logging.error('Login failed!', extra=json_response)  # this event is sent to Sentry
+            # raise login failed
+            raise LoginFailed('Login failed!')
         return json_response
 
     def profile(self):

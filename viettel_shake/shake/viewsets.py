@@ -1,16 +1,19 @@
 import json
 import logging
+from http import HTTPStatus
 from random import randint
 
 from celery import chain
 from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
+from requests import HTTPError
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .consts import USE_TOTAL_SHAKE_TURN
 from .cores import ViettelSession
+from .exceptions import LoginFailed
 from .serializers import LoginSerializer, RequestLoginSerializer
 from .tasks import shake_task
 
@@ -50,14 +53,18 @@ class ViettelShakeViewSet(viewsets.GenericViewSet):
         user_id = data['user_id']
         otp = data['otp']
         shake_turn = data['shake_turn']
+        is_admin = request.user and request.user.is_staff  # only admin can override shake turn
         session = ViettelSession(user_id=user_id)
-        login = session.login(otp=otp)
-        logger.info(login)
+        try:
+            login = session.login(otp=otp)
+            logger.info(login)
+        except (HTTPError, LoginFailed):
+            return Response({'error': 'Login failed!'}, status=HTTPStatus.UNAUTHORIZED)
         profile = session.profile()
         logger.info(profile)
         total_turn_left = profile['data']['totalTurnLeft']
         logger.info('{} total turn left: {}'.format(session.user_id, total_turn_left))
-        if shake_turn == USE_TOTAL_SHAKE_TURN:
+        if not is_admin or shake_turn == USE_TOTAL_SHAKE_TURN:
             shake_turn = total_turn_left
         if shake_turn > 0:
             # dumps headers to string for serializable when send Celery task

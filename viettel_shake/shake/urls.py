@@ -7,7 +7,7 @@ from .viewsets import ViettelShakeViewSet
 app_name = 'shake'
 
 router = DefaultRouter()
-router.register(r'shake', ViettelShakeViewSet, basename='viettel-shake')
+router.register(r'shake', ViettelShakeViewSet, basename='shake')
 
 urlpatterns = [
     path('', index),
