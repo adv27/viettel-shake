@@ -62,8 +62,11 @@ class ViettelShakeViewSet(viewsets.GenericViewSet):
         except (HTTPError, LoginFailed):
             return Response({'error': 'Login failed!'}, status=HTTPStatus.UNAUTHORIZED)
         # create Viettel user instance when login success
-        new_viettel_user = ViettelUser.objects.create(phone=phone)
-        new_viettel_user.save()
+        try:
+            ViettelUser.objects.get(phone=phone)
+        except ViettelUser.DoesNotExist:
+            new_viettel_user = ViettelUser.objects.create(phone=phone)
+            new_viettel_user.save()
         # request profile of Viettel user
         profile = session.profile()
         logger.info(profile)
