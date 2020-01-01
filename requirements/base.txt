@@ -10,6 +10,8 @@ django-celery-beat==1.5.0                   # https://github.com/celery/django-c
 flower==0.9.3                               # https://github.com/mher/flower
 kombu==4.6.3                                # https://github.com/mher/flower/issues/909
 sentry-sdk==0.13.5                          # https://github.com/getsentry/sentry-python
+gevent==1.4.0                               # https://github.com/gevent/gevent
+greenlet==0.4.15                            # https://github.com/python-greenlet/greenlet
 
 # Django
 # ------------------------------------------------------------------------------
