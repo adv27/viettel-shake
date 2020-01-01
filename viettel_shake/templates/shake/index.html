@@ -1,83 +1,94 @@
 {% load rest_framework %}
+{% load staticfiles %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Viettel Shake</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css">
-  <script
-          src="https://code.jquery.com/jquery-3.4.1.min.js"
-          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-          crossorigin="anonymous"></script>
-
+  <title>{% block title %} Viettel Shake {% endblock %}</title>
+  {% block css %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css">
+    <link rel="stylesheet" href="{% static 'css/shake.css' %}">
+  {% endblock %}
+  {% block extra_css %} {% endblock %}
 </head>
 <body>
-<div class="container-fluid" style="padding-top: 3rem">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <form class="form-horizontal" id="form-otp"
-
-                {#            onsubmit="sendOtp(e)"#}
-                {#            action="{% url 'viettel:viettel-shake-request-login' %}" method="POST" #}
-              novalidate>
-          {% csrf_token %}
-          {% render_form request_login_serializer template_pack='rest_framework/vertical' %}
+{% block content %}
+  <div class="container-fluid" style="padding-top: 3rem">
+    <div class="container">
+      <a href="https://github.com/adv27/viettel-shake">
+        <img style="position: absolute; top: 0; right: 0; border: 0;"
+             src="{% static 'images/shake/forkme_right_green_007200.png' %}" alt="Fork me on GitHub">
+      </a>
+      <div class="header">
+        <h1>Viettel Shake</h1>
+        <p><b><a href="https://github.com/adv27/viettel-shake" title="GitHub repository">Viettel Shake</a>
+          helps you automatically shake.</b></p>
+      </div>
+      <div class="section">
+        <form id="form" class="form-inline" role="form">
           <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button id="submit-otp"
-                      type="button" class="btn btn-default">Send OTP
-              </button>
+            <label class="sr-only" for="phone">Phone</label>
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">Phone</div>
+              </div>
+              <input type="text" class="form-control" id="phone" placeholder="0123456789">
             </div>
           </div>
-        </form>
-        <form class="form-horizontal"
-              id="form-login"
-{#              action="{% url 'viettel:viettel-shake-login' %}" method="POST"#}
-        >
-          {% csrf_token %}
-          {% render_form login_serializer template_pack='rest_framework/vertical' %}
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-default">Login</button>
+          <div class="form-group d-none">
+            <label class="sr-only" for="otp">OTP</label>
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">OTP</div>
+              </div>
+              <input type="text" class="form-control" id="otp" placeholder="1234"
+                     autocomplete="one-time-code">
             </div>
           </div>
+          <button id="post" type="submit" class="btn btn-primary mb-2">Submit</button>
         </form>
       </div>
     </div>
   </div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <div class="footer">
+    <a href="https://github.com/adv27/viettel-shake" title="Github repository">Viettel Shake</a>
+    by
+    <a href="https://github.com/adv27" title="Github profile of Dinh Anh Vu">Dinh Anh Vu</a>
+    .
+  </div>
+{% endblock %}
 
-</body>
+{% block js %}
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+          integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+          integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+          crossorigin="anonymous"></script>
+{% endblock %}
 
-<script>
-  $("#submit-otp").click(function () {
-    toastr.warning('Đang thực hiện!', 'Mã OPT đang được gửi đến điện thoại!');
-    let url = "{% url 'viettel:viettel-shake-request-login' %}";
-
-    var $inputs = $('#form-otp :input');
-    var values = {};
-    $inputs.each(function () {
-      values[this.name] = $(this).val();
-    });
-    $.post(url, values, function (res, status) {
-      console.log(res, status);
-
-      if(res.status.code === '00'){
-        toastr.success('Đã gửi OTP', 'Nhập mã OTP vào bước tiếp theo!');
-        $('#form-login :input[name=user_id]').val(values.user_id);
-      }else {
-        toastr.error(res.status.message,res.status.description);
-
+{% block extra_js %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    var DEBUG = {{ settings.DEBUG|yesno:"true,false" }};
+    if (!DEBUG) {
+      if (!window.console) window.console = {};
+      var methods = ["log", "debug", "warn", "info"];
+      for (var i = 0; i < methods.length; i++) {
+        console[methods[i]] = function () {
+        };
       }
-    });
-  });
-
-
-</script>
-
-</html>
+    }
+    var requestLoginPath = '{% url 'viettel:shake-request-login' %}';
+    var loginPath = '{% url 'viettel:shake-login' %}';
+  </script>
+  <script src="{% static 'js/shake.js' %}"></script>
+{% endblock %}
+</body>

@@ -31,5 +31,8 @@ class Shake(models.Model):
         default=timezone.now
     )
 
+    class Meta:
+        ordering = ('-created_at',)
+
     def __str__(self):
         return '{} - {}'.format(self.user.phone, self.data['status']['message'])
