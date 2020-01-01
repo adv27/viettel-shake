@@ -10,9 +10,12 @@ class ViettelUser(models.Model):
         blank=False,
         unique=True
     )
+    created_at = models.DateTimeField(
+        default=timezone.now
+    )
 
     def __str__(self):
-        return '{}'.format(self.phone)
+        return '{} - {}'.format(self.phone, self.created_at)
 
 
 class Shake(models.Model):

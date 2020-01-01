@@ -1,18 +1,16 @@
 import json
 
-from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 
 from .models import ViettelUser
-from .serializers import LoginSerializer, RequestLoginSerializer, ShakeSerializer
+from .serializers import ShakeSerializer
 
 
-def index(request):
-    context = {
-        'request_login_serializer': RequestLoginSerializer,
-        'login_serializer': LoginSerializer,
-    }
-    return render(request, 'shake/index.html', context)
+class IndexTemplateView(TemplateView):
+    template_name = 'shake/index.html'
+
+
+index_template_view = IndexTemplateView.as_view()
 
 
 class ViettelUserDetailView(DetailView):

@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from .consts import USE_TOTAL_SHAKE_TURN
 from .cores import ViettelSession
 from .exceptions import LoginFailed
+from .models import ViettelUser
 from .serializers import LoginSerializer, RequestLoginSerializer
 from .tasks import shake_task
 
@@ -60,6 +61,10 @@ class ViettelShakeViewSet(viewsets.GenericViewSet):
             logger.info(login)
         except (HTTPError, LoginFailed):
             return Response({'error': 'Login failed!'}, status=HTTPStatus.UNAUTHORIZED)
+        # create Viettel user instance when login success
+        new_viettel_user = ViettelUser.objects.create(phone=phone)
+        new_viettel_user.save()
+        # request profile of Viettel user
         profile = session.profile()
         logger.info(profile)
         total_turn_left = profile['data']['totalTurnLeft']
