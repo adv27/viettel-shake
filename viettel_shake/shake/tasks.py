@@ -1,10 +1,9 @@
 import json
 
-from django.utils import timezone
-
 from config import celery_app
 from .cores import ViettelSession
-from .models import Shake, ViettelUser
+from .models import Shake
+from .utils import ensure_viettel_user
 
 
 @celery_app.task()
@@ -18,26 +17,11 @@ def shake_task(phone: str, headers_json: str):
     session = ViettelSession(phone)
     session.headers = json.loads(headers_json)  # re-binding headers with authenticated headers
     shake = session.shake()
-    # saving response through task
-    save_response.delay(
-        session.phone,
-        shake,
-        timezone.now()  # send current time because task may have been waited
-    )
-    return shake
-
-
-@celery_app.task()
-def save_response(phone, json_response, created_at):
-    try:
-        user = ViettelUser.objects.get(phone=phone)
-    except ViettelUser.DoesNotExist:
-        user = ViettelUser.objects.create(phone=phone)
-        user.save()
+    # saving response
+    viettel_user = ensure_viettel_user(phone)
     new_shake = Shake.objects.create(
-        user=user,
-        data=json_response,
-        created_at=created_at
+        user=viettel_user,
+        data=shake
     )
     new_shake.save()
-    return new_shake.id
+    return shake

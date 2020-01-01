@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .consts import USE_TOTAL_SHAKE_TURN
-from .models import Shake
+from .models import Shake, ViettelUser
 
 
 def get_default_shake_turn():
@@ -26,3 +26,11 @@ class ShakeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shake
         fields = '__all__'
+
+
+class ViettelUserSerializer(serializers.ModelSerializer):
+    shakes = ShakeSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ViettelUser
+        fields = ('phone', 'shakes',)

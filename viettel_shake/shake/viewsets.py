@@ -7,7 +7,7 @@ from celery import chain
 from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
 from requests import HTTPError
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -15,10 +15,19 @@ from .consts import USE_TOTAL_SHAKE_TURN
 from .cores import ViettelSession
 from .exceptions import LoginFailed
 from .models import ViettelUser
-from .serializers import LoginSerializer, RequestLoginSerializer
+from .serializers import LoginSerializer, RequestLoginSerializer, ViettelUserSerializer
 from .tasks import shake_task
+from .utils import ensure_viettel_user
 
 logger = logging.getLogger(__name__)
+
+
+class ViettelUserViewSet(mixins.RetrieveModelMixin,
+                         viewsets.GenericViewSet):
+    serializer_class = ViettelUserSerializer
+    queryset = ViettelUser.objects.all()
+    lookup_field = 'phone'
+    lookup_url_kwarg = 'phone'
 
 
 class ViettelShakeViewSet(viewsets.GenericViewSet):
@@ -62,11 +71,7 @@ class ViettelShakeViewSet(viewsets.GenericViewSet):
         except (HTTPError, LoginFailed):
             return Response({'error': 'Login failed!'}, status=HTTPStatus.UNAUTHORIZED)
         # create Viettel user instance when login success
-        try:
-            ViettelUser.objects.get(phone=phone)
-        except ViettelUser.DoesNotExist:
-            new_viettel_user = ViettelUser.objects.create(phone=phone)
-            new_viettel_user.save()
+        ensure_viettel_user(phone)
         # request profile of Viettel user
         profile = session.profile()
         logger.info(profile)

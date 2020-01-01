@@ -1,7 +1,9 @@
 {% extends 'shake/index.html' %}
 
+{% load staticfiles %}
+
 {% block title %}
-    {{ viettel_user.phone }}
+  {{ viettel_user.phone }}
 {% endblock %}
 
 {% block extra_css %}
@@ -11,6 +13,9 @@
 {% block content %}
   <div class="container">
     <h1>{{ viettel_user.phone }}</h1>
+    <div>
+      <button id="refresh" class="btn btn-secondary">Refresh</button>
+    </div>
     <table id="table" data-height="460">
       <thead>
       <tr>
@@ -21,25 +26,20 @@
       </tr>
       </thead>
     </table>
-      {% for shake in shakes %}
-        <li>
-            {{ shake.id }}
-            {{ shake.created_at }}
-            {{ shake.data }}
-        </li>
-      {% endfor %}
+    {% for shake in shakes %}
+      <li>
+        {{ shake.id }}
+        {{ shake.created_at }}
+        {{ shake.data }}
+      </li>
+    {% endfor %}
   </div>
 {% endblock %}
 
 {% block extra_js %}
   <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
   <script>
-    var shakes = {{ shakes_json|safe }};
-    var $table = $('#table');
-    $(function () {
-      $('#table').bootstrapTable({
-        data: shakes
-      });
-    });
+    var endpoint = "{% url  'viettel:user-detail' viettel_user.phone %}";
   </script>
+  <script src="{% static 'js/detail.js' %}"></script>
 {% endblock %}

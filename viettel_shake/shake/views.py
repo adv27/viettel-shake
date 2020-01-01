@@ -6,14 +6,14 @@ from .models import ViettelUser
 from .serializers import ShakeSerializer
 
 
-class IndexTemplateView(TemplateView):
+class IndexTemplate(TemplateView):
     template_name = 'shake/index.html'
 
 
-index_template_view = IndexTemplateView.as_view()
+index_template_view = IndexTemplate.as_view()
 
 
-class ViettelUserDetailView(DetailView):
+class ViettelUserDetail(DetailView):
     model = ViettelUser
     slug_field = 'phone'
     slug_url_kwarg = 'phone'
@@ -27,4 +27,4 @@ class ViettelUserDetailView(DetailView):
         return context
 
 
-viettel_user_detail_view = ViettelUserDetailView.as_view()
+viettel_user_detail_view = ViettelUserDetail.as_view()
