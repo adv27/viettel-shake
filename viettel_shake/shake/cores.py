@@ -9,30 +9,27 @@ from .exceptions import LoginFailed
 
 
 class ViettelSession(Session):
-    def __init__(self, user_id: str = None):
+    def __init__(self, phone):
         """
-        :param user_id: Phone number without prefix '0'
+        :param phone: Viettel phone number
         """
         super().__init__()
-        self.user_id = user_id
-        # update headers
+        self.phone = phone
+        self.user_id = self.phone_number_2_user_id()
         headers = default_headers()
         headers.update({
             'Password': 'digital@2020',
             'Channel': 'APP',
             'User-Agent': 'ViettelPay/3.3.1 (iPhone; iOS 13.3; Scale/3.00)',
+            'User-Id': self.user_id
         })
-        if self.user_id:
-            headers.update({
-                'User-Id': user_id
-            })
-        self.headers = headers  # bind new headers
+        self.headers = headers  # bind headers
 
-    def get_user_id(self):
-        headers = self.headers
-        if 'User-Id' in headers:
-            return headers['User-Id']
-        raise RequestException('No User-Id in headers')
+    def phone_number_2_user_id(self):
+        """
+        Striping pre-fix '0' from phone_number
+        """
+        return self.phone[1:] if self.phone[0] == '0' else self.phone
 
     def request_login(self):
         """

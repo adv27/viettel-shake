@@ -1,6 +1,5 @@
 jQuery(function ($) {
   console.log('ready!');
-  var $output = $('#output');
   var $form = $('#form');
   var $phone = $form.find('#phone');
   var $otp = $form.find('#otp');
@@ -11,15 +10,10 @@ jQuery(function ($) {
   var CODE_SUCCESS = '00';
   var CODE_LOCKED = 'SG0004';
 
-  var phoneNormalize = function (phone) {
-    // remove prefix '0'
-    // https://stackoverflow.com/a/8276474
-    return phone.replace(/^0+/, '');
-  };
-
   var requestLogin = function () {
+    toastr.warning('Mã OPT đang được gửi đến điện thoại!');
     var payload = {
-      'user_id': phoneNormalize($phone.val()),
+      'phone': $phone.val(),
     };
     axios.post(requestLoginPath, payload)
       .then(function (response) {
@@ -39,39 +33,42 @@ jQuery(function ($) {
           // account has been locked
           console.log('Account has been locked');
           var timeLeft = result.data.lockRemain;
-          console.log('Time left: ' + timeLeft.toString())
+          console.log('Time left: ' + timeLeft.toString());
         }
-        $output.className = 'container';
-        $output.innerHTML = result.status.message;
+        toastr.success(message);
       })
       .catch(function (error) {
-        $output.className = 'container text-danger';
-        $output.innerHTML = error;
+        toastr.error(error, 'Error!')
       });
   };
 
   var login = function () {
+    toastr.warning('Login!');
     var payload = {
-      'user_id': phoneNormalize($phone.val()),
+      'phone': $phone.val(),
       'otp': $otp.val(),
     };
     axios.post(loginPath, payload)
       .then(function (response) {
-        var data = response.data;
-        console.log(data);
-        console.log(data.status.code);
-        console.log(data.status.message);
-        // if send OTP success
-        if (data.status.code === '00') {
-          $('#phone').prop('disabled', true);
-          $otpFormGroup.removeClass('d-none');
+        var result = response.data;
+        var status = result.status;
+        var code = status.code;
+        var message = status.message;
+        console.log(result);
+        console.log(code);
+        console.log(message);
+        if (code === CODE_SUCCESS) {
+          toastr.success(message);
+          // redirect to histories page
+          window.setTimeout(function () {
+            window.location = "/viettel/detail/" + $phone.val();
+          }, 1500);
+        } else {
+          toastr.error(message);
         }
-        $output.className = 'container';
-        $output.innerHTML = data.status.message;
       })
       .catch(function (error) {
-        $output.className = 'container text-danger';
-        $output.innerHTML = error;
+        toastr.error(error, 'Error!')
       });
   };
 

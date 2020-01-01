@@ -9,7 +9,7 @@ def get_default_shake_turn():
 
 
 class LoginSerializer(serializers.Serializer):
-    user_id = serializers.CharField()
+    phone = serializers.CharField()
     otp = serializers.CharField()
     shake_turn = serializers.IntegerField(
         default=get_default_shake_turn,
@@ -19,7 +19,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class RequestLoginSerializer(serializers.Serializer):
-    user_id = serializers.CharField()
+    phone = serializers.CharField()
 
 
 class ShakeSerializer(serializers.ModelSerializer):
