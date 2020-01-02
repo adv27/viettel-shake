@@ -78,9 +78,6 @@
           crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-{% endblock %}
-
-{% block extra_js %}
   <script>
     var DEBUG = {{ settings.DEBUG|yesno:"true,false" }};
     if (!DEBUG) {
@@ -91,6 +88,11 @@
         };
       }
     }
+  </script>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
     var requestLoginPath = '{% url 'viettel:shake-request-login' %}';
     var loginPath = '{% url 'viettel:shake-login' %}';
   </script>
