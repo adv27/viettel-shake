@@ -69,7 +69,7 @@ jQuery(function ($) {
           toastr.success(message, 'Đăng nhập');
           // redirect to histories page
           toastr.options.progressBar = true;
-          toastr.warning('Đang chuyển hướng tới trang lịch sử...', '',{timeOut: REDIRECT_TIMEOUT});
+          toastr.warning('Đang chuyển hướng tới trang lịch sử...', '', {timeOut: REDIRECT_TIMEOUT});
           window.setTimeout(function () {
             window.location = '/detail/' + $phone.val();
           }, REDIRECT_TIMEOUT);
