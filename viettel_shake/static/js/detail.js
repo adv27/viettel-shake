@@ -27,5 +27,9 @@ jQuery(function ($) {
     loadShakes(true);
   });
 
-  loadShakes();
+  $table.bootstrapTable({
+    responseHandler: function (res) {
+      return res.shakes;
+    }
+  })
 });

@@ -24,12 +24,16 @@
       </div>
 
       <div class="card p-4 mt-3"  style="overflow: auto">
-          <table id="table-history" data-height="460" class="table table-bordered table-hover">
+          <table
+              id="table-history"
+              data-height="460"
+              class="table table-bordered table-hover"
+              data-url="{% url  'viettel:user-detail' viettel_user.phone %}">
           <thead>
           <tr>
             <th data-field="id" data-sortable="true">ID</th>
             <th data-field="data.status.code" data-sortable="true">Code</th>
-            <th data-field="data.status.message" data-sortable="true">Kết quả</th>
+            <th data-field="data" data-sortable="true" data-formatter="resultFormatter">Kết quả</th>
             <th data-field="created_at" data-sortable="true">Thời gian</th>
           </tr>
           </thead>
@@ -53,6 +57,15 @@
   <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
   <script>
     var endpoint = "{% url  'viettel:user-detail' viettel_user.phone %}";
+  </script>
+  <script>
+    function resultFormatter(value, row) {
+      var message = value.status.message;
+      if (value.status.code === '00'){
+        message += ' ➜ ' + value.data.name;
+      }
+      return message;
+    }
   </script>
   <script src="{% static 'js/detail.js' %}"></script>
 {% endblock %}
