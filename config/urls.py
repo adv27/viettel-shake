@@ -28,7 +28,7 @@ def trigger_error(_request):
 
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
+    path("home/", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
@@ -40,7 +40,7 @@ urlpatterns = [
     # Sentry sample error
     path('sentry-debug/', trigger_error),
     # Your stuff: custom urls includes go here
-    path('viettel/', include('viettel_shake.shake.urls', namespace='viettel')),
+    path('', include('viettel_shake.shake.urls', namespace='viettel')),
     # Yet another Swagger generator
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0),
         name='schema-json'),

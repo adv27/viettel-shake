@@ -10,6 +10,8 @@ jQuery(function ($) {
   var CODE_SUCCESS = '00';
   var CODE_LOCKED = 'SG0004';
 
+  var REDIRECT_TIMEOUT = 1500;
+
   var requestLogin = function () {
     toastr.warning('Mã OPT đang được gửi đến điện thoại!');
     var payload = {
@@ -60,9 +62,11 @@ jQuery(function ($) {
         if (code === CODE_SUCCESS) {
           toastr.success(message);
           // redirect to histories page
+          toastr.options.progressBar = true;
+          toastr.success('Goto histories page!', 'Redirect', {timeOut: REDIRECT_TIMEOUT});
           window.setTimeout(function () {
-            window.location = "/viettel/detail/" + $phone.val();
-          }, 1500);
+            window.location = '/detail/' + $phone.val();
+          }, REDIRECT_TIMEOUT);
         } else {
           toastr.error(message);
         }
