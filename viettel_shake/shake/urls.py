@@ -11,7 +11,7 @@ router.register(r'shake', ViettelShakeViewSet, basename='shake')
 router.register(r'user', ViettelUserViewSet, basename='user')
 
 urlpatterns = [
-    path('', index_template_view),
+    path('', index_template_view, name='index'),
     path('detail/<str:phone>/', viettel_user_detail_view),
 ]
 urlpatterns += router.urls
