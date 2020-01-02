@@ -17,53 +17,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css">
     <link rel="stylesheet" href="{% static 'css/shake.css' %}">
   {% endblock %}
-  {% block extra_css %} {% endblock %}
+  {#  {% block extra_css %} {% endblock %}#}
 </head>
 <body>
+
 {% block content %}
-  <div class="container-fluid" style="padding-top: 3rem">
-    <div class="container">
-      <a href="https://github.com/adv27/viettel-shake">
-        <img style="position: absolute; top: 0; right: 0; border: 0;"
-             src="{% static 'images/shake/forkme_right_green_007200.png' %}" alt="Fork me on GitHub">
-      </a>
-      <div class="header">
-        <h1>Viettel Shake</h1>
-        <p><b><a href="https://github.com/adv27/viettel-shake" title="GitHub repository">Viettel Shake</a>
-          helps you automatically shake.</b></p>
-      </div>
-      <div class="section">
-        <form id="form" class="form-inline" role="form">
-          <div class="form-group">
-            <label class="sr-only" for="phone">Phone</label>
-            <div class="input-group mb-2 mr-sm-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text">Phone</div>
+  <div class="mx-5 mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card p-5">
+          <img style="position: absolute; top: 0; right: 0; border: 0;"
+               src="{% static 'images/shake/forkme_right_green_007200.png' %}" alt="Card image cap">
+          <div class="card-body">
+            <h1 class="card-title">
+              Viettel Shake
+
+            </h1>
+            <p class="card-text mb-3">
+              <b>
+                <a href="https://github.com/adv27/viettel-shake" title="GitHub repository">Viettel Shake</a>
+                helps you automatically shake.
+              </b>
+            </p>
+            <form id="form" class="form-inline py-5" role="form">
+              <div class="row" style="width: 100%;">
+                <div class="col-lg-8 offset-lg-2 col-md-12">
+                  <div class="form-group">
+                    <label class="sr-only" for="phone">Phone</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">Phone</div>
+                      </div>
+                      <input type="number" class="form-control-lg" id="phone" placeholder="0123456789">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-8 offset-lg-2 col-md-12">
+
+                  <div class="form-group  d-none">
+                    <label class="sr-only" for="otp">OTP</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">OTP</div>
+                      </div>
+                      <input type="number" class="form-control-lg" id="otp" placeholder="1234"
+                             autocomplete="one-time-code">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-8 offset-lg-2 col-md-12">
+                      <div class="d-flex flex-row-reverse">
+                        <button id="post" type="submit" class="btn btn-success btn-lg mb-2 ">Submit</button>
+                  </div>
+                </div>
+
               </div>
-              <input type="text" class="form-control" id="phone" placeholder="0123456789">
+
+            </form>
+            <div class="card-footer mt-3">
+              <a href="https://github.com/adv27/viettel-shake" title="Github repository">Viettel Shake</a>
+              by
+              <a href="https://github.com/adv27" title="Github profile of Dinh Anh Vu">Dinh Anh Vu</a>
+              .
             </div>
           </div>
-          <div class="form-group d-none">
-            <label class="sr-only" for="otp">OTP</label>
-            <div class="input-group mb-2 mr-sm-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text">OTP</div>
-              </div>
-              <input type="text" class="form-control" id="otp" placeholder="1234"
-                     autocomplete="one-time-code">
-            </div>
-          </div>
-          <button id="post" type="submit" class="btn btn-primary mb-2">Submit</button>
-        </form>
+
+        </div>
       </div>
     </div>
   </div>
-  <div class="footer">
-    <a href="https://github.com/adv27/viettel-shake" title="Github repository">Viettel Shake</a>
-    by
-    <a href="https://github.com/adv27" title="Github profile of Dinh Anh Vu">Dinh Anh Vu</a>
-    .
-  </div>
+
 {% endblock %}
 
 {% block js %}

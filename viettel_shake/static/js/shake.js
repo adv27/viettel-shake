@@ -31,13 +31,19 @@ jQuery(function ($) {
           $('#phone').prop('disabled', true);
           $otpFormGroup.removeClass('d-none');
           sentOTP = true;
-        } else if (code === CODE_LOCKED) {
-          // account has been locked
-          console.log('Account has been locked');
-          var timeLeft = result.data.lockRemain;
-          console.log('Time left: ' + timeLeft.toString());
+          toastr.success(message);
+        } else {
+            switch (code) {
+                case CODE_LOCKED:{
+                  // account has been locked
+                  console.log('Account has been locked');
+                  var timeLeft = result.data.lockRemain;
+                  console.log('Time left: ' + timeLeft.toString());
+                }
+            }
+            toastr.error(message);
         }
-        toastr.success(message);
+
       })
       .catch(function (error) {
         toastr.error(error, 'Error!')
@@ -63,7 +69,8 @@ jQuery(function ($) {
           toastr.success(message);
           // redirect to histories page
           toastr.options.progressBar = true;
-          toastr.success('Goto histories page!', 'Redirect', {timeOut: REDIRECT_TIMEOUT});
+          toastr.success('Đăng nhập thành công!', '', {timeOut: REDIRECT_TIMEOUT});
+          toastr.warning('Đang chuyển hướng tới trang lịch sử...');
           window.setTimeout(function () {
             window.location = '/detail/' + $phone.val();
           }, REDIRECT_TIMEOUT);
