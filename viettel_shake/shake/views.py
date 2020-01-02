@@ -1,9 +1,15 @@
 import json
 
+from django.shortcuts import redirect, reverse
 from django.views.generic import DetailView, TemplateView
 
 from .models import ViettelUser
 from .serializers import ShakeSerializer
+
+
+def view_404(request, exception=None):
+    # make a redirect to homepage
+    redirect(reverse('shake:index'))
 
 
 class IndexTemplate(TemplateView):

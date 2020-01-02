@@ -74,3 +74,6 @@ if settings.DEBUG:
         import debug_toolbar
 
         urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+else:
+    # redirect to home path on 404 exception
+    handler404 = 'viettel_shake.shake.views.view_404'
