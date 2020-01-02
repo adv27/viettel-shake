@@ -33,15 +33,15 @@ jQuery(function ($) {
           sentOTP = true;
           toastr.success(message);
         } else {
-            switch (code) {
-                case CODE_LOCKED:{
-                  // account has been locked
-                  console.log('Account has been locked');
-                  var timeLeft = result.data.lockRemain;
-                  console.log('Time left: ' + timeLeft.toString());
-                }
+          switch (code) {
+            case CODE_LOCKED: {
+              // account has been locked
+              console.log('Account has been locked');
+              var timeLeft = result.data.lockRemain;
+              console.log('Time left: ' + timeLeft.toString());
             }
-            toastr.error(message);
+          }
+          toastr.error(message);
         }
 
       })
@@ -66,11 +66,10 @@ jQuery(function ($) {
         console.log(code);
         console.log(message);
         if (code === CODE_SUCCESS) {
-          toastr.success(message);
+          toastr.success(message, 'Đăng nhập');
           // redirect to histories page
           toastr.options.progressBar = true;
-          toastr.success('Đăng nhập thành công!', '', {timeOut: REDIRECT_TIMEOUT});
-          toastr.warning('Đang chuyển hướng tới trang lịch sử...');
+          toastr.warning('Đang chuyển hướng tới trang lịch sử...', '',{timeOut: REDIRECT_TIMEOUT});
           window.setTimeout(function () {
             window.location = '/detail/' + $phone.val();
           }, REDIRECT_TIMEOUT);

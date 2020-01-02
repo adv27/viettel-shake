@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block extra_css %}
-
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
         integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
@@ -25,14 +24,13 @@
       </div>
 
       <div class="card p-4 mt-3"  style="overflow: auto">
-        <table id="table-history" data-height="460" class="table table-bordered table-hover">
-
+          <table id="table-history" data-height="460" class="table table-bordered table-hover">
           <thead>
           <tr>
-            <th data-field="id">ID</th>
-            <th data-field="data.status.code">Code</th>
-            <th data-field="data.status.message">Kết quả</th>
-            <th data-field="created_at">Thời gian</th>
+            <th data-field="id" data-sortable="true">ID</th>
+            <th data-field="data.status.code" data-sortable="true">Code</th>
+            <th data-field="data.status.message" data-sortable="true">Kết quả</th>
+            <th data-field="created_at" data-sortable="true">Thời gian</th>
           </tr>
           </thead>
         </table>
@@ -55,7 +53,6 @@
   <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
   <script>
     var endpoint = "{% url  'viettel:user-detail' viettel_user.phone %}";
-    {#var endpoint = "https://cors-anywhere.herokuapp.com/https://shake.adv.engineer/user/0355683241";#}
   </script>
   <script src="{% static 'js/detail.js' %}"></script>
 {% endblock %}
