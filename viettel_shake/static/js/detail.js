@@ -10,6 +10,7 @@ jQuery(function ($) {
         if (refresh) {
           // drop old rows then load new data
           $table.bootstrapTable('load', data.shakes);
+          toastr.success('Updated!');
         } else {
           // init table
           $table.bootstrapTable({data: data.shakes});
