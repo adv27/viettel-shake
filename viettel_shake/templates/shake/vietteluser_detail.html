@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="card p-4 mt-5"  style="overflow: auto">
+      <div class="card p-4 mt-3"  style="overflow: auto">
         <table id="table-history" data-height="460" class="table table-bordered table-hover">
 
           <thead>
@@ -38,7 +38,7 @@
         </table>
 
       </div>
-      <div class="card p-4 mt-5">
+      <div class="card p-4 mt-3">
         {% for shake in shakes %}
           <li>
             {{ shake.id }}
@@ -54,8 +54,8 @@
 {% block extra_js %}
   <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
   <script>
-    {#var endpoint = "{% url  'viettel:user-detail' viettel_user.phone %}";#}
-    var endpoint = "https://cors-anywhere.herokuapp.com/https://shake.adv.engineer/user/0355683241";
+    var endpoint = "{% url  'viettel:user-detail' viettel_user.phone %}";
+    {#var endpoint = "https://cors-anywhere.herokuapp.com/https://shake.adv.engineer/user/0355683241";#}
   </script>
   <script src="{% static 'js/detail.js' %}"></script>
 {% endblock %}
