@@ -1,5 +1,5 @@
-{% load rest_framework %}
 {% load staticfiles %}
+{% load humanize %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +52,6 @@
                   </div>
                 </div>
                 <div class="col-lg-8 offset-lg-2 col-md-12">
-
                   <div class="form-group  d-none">
                     <label class="sr-only" for="otp">OTP</label>
                     <div class="input-group mb-3">
@@ -69,10 +68,33 @@
                     <button id="post" type="submit" class="btn btn-success btn-lg mb-2 ">Submit</button>
                   </div>
                 </div>
-
               </div>
-
             </form>
+
+            <div class="container">
+              <p class="card-text mb-3"><b>Recently gifts</b></p>
+              <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table">
+                  <thead class="thead-light">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Time</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for gift in gifts %}
+                    <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td>{{ gift.data.data.name }}</td>
+                      <td>{{ gift.created_at|naturaltime }}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             <div class="card-footer mt-3">
               <a href="https://github.com/adv27/viettel-shake" title="Github repository">Viettel Shake</a>
               by
@@ -80,7 +102,6 @@
               .
             </div>
           </div>
-
         </div>
       </div>
     </div>

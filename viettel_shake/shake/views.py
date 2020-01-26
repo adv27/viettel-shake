@@ -1,9 +1,12 @@
 import json
 
+from django.db.models import Q
 from django.shortcuts import redirect, reverse
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, TemplateView
 
-from .models import ViettelUser
+from .models import Shake, ViettelUser
 from .serializers import ShakeSerializer
 
 
@@ -14,6 +17,21 @@ def view_404(request, exception=None):
 
 class IndexTemplate(TemplateView):
     template_name = 'shake/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # get recently gifts
+        query = \
+            Q(data__status__code='SG0020') \
+            | Q(data__status__code='SG0021') \
+            | Q(data__status__code='SG0023')
+        gifts = Shake.objects.exclude(query)[:400]
+        context['gifts'] = gifts
+        return context
+
+    @method_decorator(cache_page(30))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 index_template_view = IndexTemplate.as_view()
