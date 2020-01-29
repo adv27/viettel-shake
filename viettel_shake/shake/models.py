@@ -46,6 +46,7 @@ class Shake(models.Model):
         default=timezone.now
     )
 
+    objects = models.Manager()
     gifts = GiftManager()
 
     class Meta:
