@@ -1,10 +1,11 @@
 import json
+from collections import Counter
 
-from django.db.models import Q
 from django.shortcuts import redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, TemplateView
+from sentry_sdk import capture_exception
 
 from .models import Shake, ViettelUser
 from .serializers import ShakeSerializer
@@ -20,13 +21,18 @@ class IndexTemplate(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # get recently gifts
-        query = \
-            Q(data__status__code='SG0020') \
-            | Q(data__status__code='SG0021') \
-            | Q(data__status__code='SG0023')
-        gifts = Shake.objects.exclude(query)[:400]
-        context['gifts'] = gifts
+        try:
+            # get recently gifts
+            gifts = Shake.gifts.all()
+            gifts = list(gifts)
+            gift_names = list(map(lambda g: g.data['data']['name'], gifts))
+            counter = Counter(gift_names).most_common()
+            context.update({
+                'gifts': gifts[:400],
+                'gifts_counter': counter
+            })
+        except Exception as e:
+            capture_exception(e)
         return context
 
     @method_decorator(cache_page(30))

@@ -38,6 +38,7 @@
                 helps you automatically shake.
               </b>
             </p>
+            <div class="border-top my-3"></div>
             <form id="form" class="form-inline py-5" role="form">
               <div class="row" style="width: 100%;">
                 <div class="col-lg-8 offset-lg-2 col-md-12">
@@ -70,7 +71,31 @@
                 </div>
               </div>
             </form>
-
+            <div class="border-top my-3"></div>
+            <div class="container">
+              <p class="card-text mb-3"><b>Gifts statistic</b></p>
+              <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table">
+                  <thead class="thead-light">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Count</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for g in gifts_counter %}
+                    <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td>{{ g.0 }}</td>
+                      <td>{{ g.1 }}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="border-top my-3"></div>
             <div class="container">
               <p class="card-text mb-3"><b>Recently gifts</b></p>
               <div class="table-wrapper-scroll-y my-custom-scrollbar">
