@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load humanize %}
+{% load shake_extras %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,6 +72,30 @@
                 </div>
               </div>
             </form>
+            <div class="border-top my-3"></div>
+            <div class="container">
+              <p class="card-text mb-3"><b>Top users</b></p>
+              <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table">
+                  <thead class="thead-light">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Shakes count</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in users %}
+                    <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td>{{ user.phone|phone_censor }}</td>
+                      <td>{{ user.num_shakes }}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
             <div class="border-top my-3"></div>
             <div class="container">
               <p class="card-text mb-3"><b>Gifts statistic</b></p>
