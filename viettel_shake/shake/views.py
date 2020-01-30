@@ -1,6 +1,7 @@
 import json
 from collections import Counter
 
+from django.db.models import Count, Q
 from django.shortcuts import redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -22,12 +23,21 @@ class IndexTemplate(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
+            # top 100 users, in order by number of shakes
+            # only select valid shake
+            query = \
+                Q(shakes__data__status__code='SG0020') \
+                | Q(shakes__data__status__code='SG0021')
+            users = ViettelUser.objects.annotate(
+                num_shakes=Count('shakes', filter=~query)
+            ).order_by('-num_shakes')[:100]
             # get recently gifts
             gifts = Shake.gifts.all()
             gifts = list(gifts)
             gift_names = list(map(lambda g: g.data['data']['name'], gifts))
             counter = Counter(gift_names).most_common()
             context.update({
+                'users': users,
                 'gifts': gifts[:400],
                 'gifts_counter': counter
             })
@@ -52,8 +62,10 @@ class ViettelUserDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         shakes = self.object.shakes.all()
-        context['shakes'] = shakes
-        context['shakes_json'] = json.dumps(ShakeSerializer(shakes, many=True).data)
+        context.update({
+            'shakes': shakes,
+            'shakes_json': json.dumps(ShakeSerializer(shakes, many=True).data)
+        })
         return context
 
 
