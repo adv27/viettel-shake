@@ -5,6 +5,8 @@ from random import randint
 
 from celery import chain
 from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from drf_yasg.utils import swagger_auto_schema
 from requests import HTTPError
 from rest_framework import mixins, viewsets
@@ -28,6 +30,10 @@ class ViettelUserViewSet(mixins.RetrieveModelMixin,
     queryset = ViettelUser.objects.all()
     lookup_field = 'phone'
     lookup_url_kwarg = 'phone'
+
+    @method_decorator(cache_page(settings.CACHE_DETAIL))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
 
 class ViettelShakeViewSet(viewsets.GenericViewSet):

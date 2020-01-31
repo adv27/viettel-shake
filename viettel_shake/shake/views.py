@@ -1,6 +1,7 @@
 import json
 from collections import Counter
 
+from django.conf import settings
 from django.db.models import Count, Q
 from django.shortcuts import redirect, reverse
 from django.utils.decorators import method_decorator
@@ -45,7 +46,7 @@ class IndexTemplate(TemplateView):
             capture_exception(e)
         return context
 
-    @method_decorator(cache_page(30))
+    @method_decorator(cache_page(settings.CACHE_INDEX))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
