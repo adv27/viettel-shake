@@ -318,3 +318,5 @@ if SENTRY_DSN:
 # ------------------------------------------------------------------------------
 MIN_COUNTDOWN = env.int("MIN_COUNTDOWN", default=1)
 MAX_COUNTDOWN = env.int("MAX_COUNTDOWN", default=5)
+CACHE_INDEX = env.int("CACHE_INDEX", default=30)
+CACHE_DETAIL = env.int("CACHE_DETAIL", default=5)
